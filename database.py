@@ -64,6 +64,7 @@ def get_data(table):
 def fetch_users():
     return execute_query("SELECT id, name FROM users", fetch=True)
 
+
 # ------------------------------
 # INSERT FUNCTIONS
 # ------------------------------
