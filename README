@@ -1,0 +1,471 @@
+JS - WAS DESIGNED TO WORK IN THE BROWSER CREATING INTERACTIVE UIs AND REACTIVITY
+NODE JS - RUNS ON CHROME'S V8 ENGINE - RUNS ON A SERVER OUTSIDE THE BROWSER
+
+SERVER SIDE LANGUAGE - PYTHON, C++ , JAVA , GO , C , NODE JS
+CLIENT SIDE LANGUAGE - HTML, CSS , JS
+
+
+UI -> SERVER -> DB
+
+SERVER - LOGIC - DATA PROCESSING -> CORRECT DATA TYPES
+                        ->  DATA ORG.
+                        -> 
+
+MPESA
+
+PSYCOPG2 -POSTGRESQL DATABASE ADAPTER -> CONNECT OUR PYTHON SERVER TO A DB ENVIRONMENT
+CLIENT - SERVER MODEL 
+CLIENT - USUALLY A BROWSER THAT SENDS A REQUEST FOR DATA OR WEB PAGES
+SERVER - COMPUTER THAT RECEIVES REQUESTS FROM A CLIENT, PROCESSES IT AND SENDS A RESPONSE
+
+WHAT HAPPENS WHEN YOU TYPE A URL?
+www.netflix.com
+1.dns lookup - translating domain names to IP addresses
+2.client sends a request
+3.server receives request
+4.response
+
+ip address - unique number assigned to each device on a network e.g 192.168.1.1
+
+html/css/js ---------- python ------------ sql
+
+database.py -> db file -> execute db operations
+main.py -> flask -> server file -> data processing / logic
+
+Psycopg2
+create a new database 
+create the tables -> products, sales, stock , users
+
+create database db_name;
+create database myduka_app;
+
+
+insert into products(name,buying_price,selling_price)values('bread',50,60);
+myduka2=# select * from products;
+ id | name  | buying_price | selling_price 
+----+-------+--------------+---------------
+  1 | bread |        50.00 |         60.00
+(1 row)
+
+
+PSYCOPG2
+-Goal -> write and execute sql queries in python
+-perform CRUD operations on data in Python rather than an SQL env. 
+C ->CREATE -> INSERT
+R -> READ -> SELECT 
+U -UPDATE -> UPDATE 
+D -DELETE -> DELETE
+
+PSYCOPG2 - a PostgreSQL database adapter for Python. Driver that connects your Python
+code to a db
+
+establishing  connection to the db 
+psycopg2.connect()
+1.user -> postgres -> postgres user
+2.password -> password attached to that postgres user
+3.host -> where is your db located? -> localhost (your pc)
+            --localhost -> ip address of your device -> 127.0.0.1 
+4.port -> where exactly on my device is the PostgreSQL service running?
+5.database -> db you want to connect to e.g myduka_app
+
+cur -> object to perform db operations
+
+Take note of data structure format - what is the data stored in?
+
+[(1, 'bread', Decimal('50.00'), Decimal('60.00'))] -> 
+list of one tuple -> for one product
+list of tuples -> multiple products
+
+[(1, 'bread', Decimal('50.00'), Decimal('60.00')), (2, 'milk', Decimal('40.00'), Decimal('60.00')), (3, 'milk', Decimal('40.00'), Decimal('60.00')), (4, 'milk', Decimal('40.00'), Decimal('60.00')), (5, 'milk', Decimal('40.00'), Decimal('60.00'))]
+
+Functions -> block of reusable code -> used with return keyword
+
+1. Reusability - parameters
+2. Organization -readability
+3. Easy debugging
+4. Modularity -> breaks code into smaller reusable chunks
+
+            variable scopes
+local variable -> accessible in its defined block
+global variable -> accessible in the entire program
+
+TASK 
+1. insert one sale using sql shell / psql in your sales table
+2. fetch that sale using psycopg2 and print it in your terminal -> use a fetch_sale()
+        ->take note of data format
+3.insert another 3 sales using psycopg2 and use fetch sales function to see your inserted data
+ -> for 2 & 3 -> use functions
+
+
+ html/css/js <--------> python <-----------> sql
+constraints -> Unique 
+    "insert into products(name,buying_price,selling_price)values('eggs',15,20)"
+
+parameter -> placeholder / temporary value passed when defining  function
+arguments (args) -> actual values passed when calling the function
+
+1. a function that gets data from any table
+2. insert products with parameters
+3. insert sales with parameters
+
+
+insert into products(name,buying_price,selling_price)values(values)
+
+FLASK
+Is a Python framework used to build web applications 
+
+Framework && Library
+
+
+Framework is pre-built code that gives you a starting point to build applications faster
+and easily -  comes with ready made tools and features so that you dont have to build everything
+from scratch
+Library - pre-wriiten that you can use to solve specific problems or add features to your program
+
+Analogy -> Building a House
+Scenrio 1
+You could build a house yourself with no help at all using tools you want and how you want to use 
+them -> flexibility -> no restrictions  -> LIBRARY
+e.g 
+Numpy ,Matplotlib, Pandas, tensorflow (ML) ,Scikit-Learn(ML)
+
+Scenario 2
+You enlist the help of building professionals who dictate how to build the house and in what
+time frame including what tools should be used - You follow restrictions, guidelines as pointed
+out by these professionals  -> FRAMEWORK -> follows strict framework guidelines
+e.g Python -> Flask ,FastAPI,Django
+    JS -> React, Vue, Angular, Svelte
+    C#  -> .NET
+    Java - Spring
+    NODEJS -> Express
+
+
+Routing Feature
+Routing : mechanism to map URLS to Python functions - system for resource navigtion 
+Routing connects a URL to a function in your flask app
+
+Home -----> (functions) ------>About Us
+/                              /about_us
+
+https://techcamp.co.ke   -- Home
+https://techcamp.co.ke/about_us   -- About Us
+https://techcamp.co.ke/certifications - Certification Trainings
+URL _> full address used to access resources online
+Route -> part of the URL that determines what function to execute when a 
+specific url is called
+
+-> In Flask routes are defined using a decorator function -> @app.route() -> @
+Decorator is a function that determines the behaviour of another function
+
+View function -> the actual function executing to provide resources
+
+www.google.com -> 198.168.0.1
+
+127.0.0.1 -> localhost -> your local device
+http://127.0.0.1:5000
+5000 -> port -> where exactly on localhost is this flask server running
+
+http://127.0.0.1:5000/
+http://127.0.0.1:5000/
+https://www.safaricom.co.ke/mpesa
+
+A    =-------=    B
+
+How Routing Works
+1. User enters a URL and Flask matches the URL to a registered route
+2. If route is found -> view function executes and data is returned
+3. If not found -> returns 404 
+
+
+->static 
+  -> represents all static files -> css,js,images,videos,favicons
+->templates
+  -> defines where to put all html files
+  -> a single html file is called a template
+-database.py 
+-main.py 
+
+
+N/B ---- cant have 2 view functions with same name
+
+
+-index.html
+-products.html
+-sales.html
+-stock.html
+-dashboard.html
+
+
+Get data from db
+      |
+Get to Flask
+       |
+Display data in html (tables)
+
+
+Returning A HTML FILE
+1.place the file inside templates folder
+2.import a function from Flask responsible for returning html files
+3.pass the name of the html file as an argument to this function
+
+
+JINJA
+- a templating engine integrated with flask to render dynamic html pages
+- we can use Jinja to pass Python data and logic in html  
+1.Jinja with data
+---> {{ }} -> variables
+---> {% %} -logic -> control structures
+1. initialize logic
+2. logic definition
+3. terminate logic
+
+
+Control Structures
+1.Sequence - execute a program top to bottom left to right
+2.Iteration - looping e.g for loops, while , do while
+3.Selection - conditional statements -if -> decision makers
+ e.g
+
+
+
+
+
+
+Meanwhile get a navbar from bootstrap ---have the following in the navbar
+ Home ---- Products ----Sales ---- Stock --- Dashboard
+
+
+ 1.Create a parent template that houses all common elements 
+ e.g navbar, footer
+ 2. Have all the other pages inherit from the parent template
+
+Define content inside blocks
+
+
+
+html
+    {% block title %} {% endblock %}
+  body
+
+    div
+        div Navbar div
+
+        {% block content %} {% endblock %}
+
+
+        div Footer div
+    div
+  body
+html
+
+    TASK:
+Display sales data in a sales table within sales page -> use template inheritance to provide 
+navbar and footer to the sales page from base
+
+Psycopg2
+Routing - decorator func, view func , route/path
+Displayed data with Flask
+Template Inheritance
+
+POSTING DATA WITH FLASK
+Posting - sending data to a server e.g login , sending money etc
+
+Process
+1.Provide the user with a form to fill some data - Bootstrap
+2.User fills form and submits data
+3.Form is submitted to a route in Flask 
+4.If route is found data is processed and posted to the db using functions
+5.Data is viewed - redirect a user back to the products page
+
+
+Form Checklist
+-> method attribute  - in the opening form tag
+-> action attribute - in the opening form tag
+-> name attribute - key used by the server to access values from data
+-> input type
+-> button type submit
+
+
+method -> telling a server what to do with data 
+    types of methods: ->
+    GET - fetching or getting data from a server e.g fetching products
+    POST - sending data to a server e.g adding products,making sales
+    PUT - Updating existing data e.g updating selling price
+    DELETE - getting rid of data 
+
+action -> where do you want data from the form to be processed -> route
+
+
+N/B 
+Get - list of tuples
+Post - from the form ,data comes in form of key-value pairs x:y e.g 
+    'product':'eggs'
+
+
+Extracting data from a form
+1.methods
+2.use request object from flask to extract form data using the key(name attribute)
+  request.form -> extract data from a form using a key
+  request.method -> tells a server what method is being used
+
+
+redirect(url_for()) -> where to take a user after a specific action
+  -is a function
+  -pass as argument the name of the view function where you want to take them
+
+
+Status Codes  - a way for theserver to communicate with an application
+1 -> Informational
+2-> succesful responses
+3-> redirection
+4 -> client error
+5 -> server error
+
+
+POSTING / MAKING SALES
+id | pid | quantity |         created_at         
+----+-----+----------+----------------------------
+  1 |   1 |       12 | 2025-07-22 15:03:12.084641
+
+
+Insert into sales(pid,quantity)values()
+
+
+{{}} - variables
+{% %} - control structures
+
+Implement full add stock functionality using a form
+Hint -> Posting stock is exactly the same as posting sales
+
+
+eggs - 100
+
+50
+100 - 50 = 50
+#stock
+1 eggs 100 created_at
+1 eggs 100 created_at
+1 eggs 300 created_at
+
+
+400 eggs
+
+
+#sales
+1 eggs 40 created_at
+1 eggs 50 created_at
+1 eggs 60 created_at
+
+150 eggs
+
+400 -150 = 250 eggs
+Flash Messaging - used to send one time notifications from the server to the client
+to notify a user about the result of an action
+e.g action - adding a product
+    notification - Product Added succesfully
+                  - Could not add product
+                
+-Implemented using flash()
+-Messages / notifications are usually stored in a session cookie
+-secret-key
+
+Message Categories
+1.success - green
+2.error/danger -red
+3.info - blue
+4.warning - yellow
+
+
+Task - 1.Have the make sale and add stock forms inside a modal
+      2.Add flashing for stock and sales route
+
+DASHBOARD
+In our dashboard -> simple data visualization
+1. Query for data you're interested in .
+2. Use some charts to display this data -> line charts -> bar charts 
+-> pie charts -> frequency polygon -> scatter plots -> heatmaps 
+
+-> Line chart -> data with a time component
+-> Bar Chart -> categorical data (months,days,product names)
+1. Sales -> sales per product - bar chart
+        -> sales per day -line
+2.Profit -> profit per product - bar
+          -> profit per day - line 
+
+select products.name ,sum(products.selling_price * sales.quantity) as total_sales from products inner join sales on sales.pid = products.id group by products.name;
+
+select products.name , sum((products.selling_price -products.buying_price) * sales.quantity) from sales join products 
+on sales.pid = products.id group by products.name;
+
+select sales.created_at as date, sum(product.selling_price * sales.quantity) as total_sales from products inner join sales
+on sales.pid = products.id group by(date);
+
+
+select sales.created_at as date, sum((products.selling_price -products.buying_price) * sales.quantity) as profit from products inner join sales on sales.pid = products.id group by(date);
+
+
+
+
+Sales per product  -product
+Profit per product  -product
+product -> x axis
+sales & profit -> y axis
+
+
+ 
+Sale per day - day
+Profit per day  - day
+day - x axis
+sales & profit - y axis
+
+
+eggs - sales - profit
+
+phones - 100 - 
+None vs 0
+
+
+Registering a user -> posting data ->posting user's data
+Posting Data Form CheckList
+1.Method -> GET,POST,PUT,DELETE -> 
+2.Action -> where do you want to send data
+3.Name -> key 
+4.Input Type -> 
+5.Button type submit 
+
+
+insert into users(full_name,email,phone_number,password)values()
+
+Take user input using a form
+Submit data to register route
+Extract that user data using request.form
+Check if that user exists -> double registration -use email to check
+If user exists -> flash user exists and redirect to login
+If user doesnt exist -> hash password and add user
+
+Hashing Passwords -> changing human redable password texts to formats that cant be deciphered easily
+1234 -> #hjrjiid9djby73u88eh3bv3bb
+-converting plaain text password into unreadable strings -security
+
+decode utf -8 process of converting bytes into text
+
+utf -> Unicode Transformation Format
+unicode -> universal representation of characters to represent text from any language
+
+
+1234 - $299dbbc878wenndxhjhxjjjkcxkkdk
+
+session -> a way to temporarily store user data across multiple requests on an application
+
+
+EXTRA STUFF
+1. Object Oriented Programming - classes and objects
+2. SQLAlchemy - ORMs
+3. Python Virtual environment
+4. Editing a product
+5. Context processor
+6. Flask login
+
+
+TRUNCATE TABLE table_name RESTART IDENTITY;
+TRUNCATE - DELETES AND LEAVES THE DB STRUCTURE

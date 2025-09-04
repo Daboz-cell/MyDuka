@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %} Home {% endblock %}
+{% block content %}
+
+<div class="container mt-5 pt-5">
+  <h2 class="text-center mb-4">Welcome to BlueMart Mini Mart 🛒</h2>
+  <p class="text-center mb-5">Shop by category and find everything you need!</p>
+
+  <div class="row">
+    <!-- Fruits & Vegetables -->
+    <div class="col-md-4 mb-3">
+      <div class="card h-100 shadow-sm">
+        <img src="{{ url_for('static', filename='images/fruits.jpg') }}" 
+             class="card-img-top category-img" alt="Fruits">
+        <div class="card-body text-center">
+          <h5 class="card-title">Fruits & Vegetables</h5>
+          <a href="/products" class="btn btn-primary">Shop Now</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dairy -->
+    <div class="col-md-4 mb-3">
+      <div class="card h-100 shadow-sm">
+        <img src="{{ url_for('static', filename='images/dairy.jpg') }}" 
+             class="card-img-top category-img" alt="Dairy">
+        <div class="card-body text-center">
+          <h5 class="card-title">Dairy Products</h5>
+          <a href="/products" class="btn btn-primary">Shop Now</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bakery -->
+    <div class="col-md-4 mb-3">
+      <div class="card h-100 shadow-sm">
+        <img src="{{ url_for('static', filename='images/bakery.jpg') }}" 
+             class="card-img-top category-img" alt="Bakery">
+        <div class="card-body text-center">
+          <h5 class="card-title">Bakery</h5>
+          <a href="/products" class="btn btn-primary">Shop Now</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Beverages -->
+    <div class="col-md-6 mb-3">
+      <div class="card h-100 shadow-sm">
+        <img src="{{ url_for('static', filename='images/beverages.jpg') }}" 
+             class="card-img-top category-img" alt="Beverages">
+        <div class="card-body text-center">
+          <h5 class="card-title">Beverages</h5>
+          <a href="/products" class="btn btn-primary">Shop Now</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Household Essentials -->
+    <div class="col-md-6 mb-3">
+      <div class="card h-100 shadow-sm">
+        <img src="{{ url_for('static', filename='images/household.jpg') }}" 
+             class="card-img-top category-img" alt="Household">
+        <div class="card-body text-center">
+          <h5 class="card-title">Household Essentials</h5>
+          <a href="/products" class="btn btn-primary">Shop Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

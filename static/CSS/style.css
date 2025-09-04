@@ -1,0 +1,90 @@
+/* -------------------- GLOBAL STYLES -------------------- */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding-top: 70px; /* For sticky navbar spacing */
+}
+
+/* -------------------- NAVBAR STYLING -------------------- */
+.navbar {
+    background-color: rgb(7, 175, 241) !important; /* Light + 40% opacity */
+    backdrop-filter: blur(8px); /* Stronger blur for text legibility */
+    box-shadow: 0 4px 6px rgba(12, 12, 12, 0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: white !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navbar-brand img {
+    width: 80px;  /* Bigger logo */
+    height: auto;
+    margin-right: 8px;
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5));
+}
+
+.navbar .nav-link {
+    color: #000 !important; /* Black text for contrast */
+    font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+    color: #0056b3 !important; /* Blue hover */
+}
+
+.navbar-nav .nav-link.active {
+    border-bottom: 2px solid #ffdd00; /* Highlight active link */
+}
+
+/* -------------------- CARD HEADERS -------------------- */
+.card-header {
+    background-color: #004aad;
+    color: white;
+    font-weight: bold;
+}
+
+/* -------------------- GRID LAYOUT FOR DASHBOARD -------------------- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.dashboard-grid .card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+}
+
+.dashboard-grid .card:hover {
+    transform: translateY(-3px);
+}
+
+.category-img {
+  height: 250px;       /* fix image height */
+  object-fit: cover;   /* crop to fit nicely */
+  width: 100%;         /* responsive full width */
+  border-radius: 8px;
+}
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+    color: #ffffff;
+}
+
