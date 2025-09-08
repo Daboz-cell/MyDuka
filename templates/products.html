@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %} Products {% endblock%}
+{% block content %}
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add Products
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add a Product</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/add_products">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Product Name</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" name="product">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Buying price</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="buying_price">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Selling price</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="selling_price">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Category</label>
+                        <select name="category_id" id="">
+                            <option value="">Select Category</option>
+                            {% for category in categories %}
+                            <option value="{{category[0]}}">{{ category[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3>Products{% if category_id %} in {{ categories | selectattr('0', 'equalto', category_id) | map(attribute='1') | first }}{% endif %}</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Product Name</th>
+            <th>Buying Price</th>
+            <th>Selling Price</th>
+            <th>Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product[0] }}</td>
+            <td>{{ product[1] }}</td>
+            <td>{{ product[2] }}</td>
+            <td>{{ product[3] }}</td>
+            <td>{{ product[4] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

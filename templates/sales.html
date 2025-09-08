@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %} Sales {% endblock %}
+{% block content %}
+<div>
+
+  <div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Make Sale
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Make a Sale</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="post" action="/add_sales">
+              <div class="mb-3">
+                <label class="form-label">Select Product</label>
+                <select name="pid" class="form-control" required>
+                  <option value="">Select Product</option>
+                  {% for product in products %}
+                  <option value="{{ product[0] }}">{{ product[1] }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Select User</label>
+                <select name="user_id" class="form-control" required>
+                  <option value="">Select User</option>
+                  {% for user in users %}
+                  <option value="{{ user[0] }}">{{ user[1] }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Quantity</label>
+                <input type="number" class="form-control" name="quantity" min="1" required>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add Sale</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <table id="example" class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Product</th>
+          <th>User</th>
+          <th>Quantity</th>
+          <th>Total Price</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sale in sales %}
+        <tr>
+          <td>{{ sale[0] }}</td>
+          <td>{{ sale[1] }}</td>
+          <td>{{ sale[2] }}</td>
+          <td>{{ sale[3] }}</td>
+          <td>{{ sale[4] }}</td>
+          <td>{{ sale[5] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+{% endblock %}
