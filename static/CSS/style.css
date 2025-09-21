@@ -1,15 +1,19 @@
 /* -------------------- GLOBAL STYLES -------------------- */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
     margin: 0;
     padding-top: 70px; /* For sticky navbar spacing */
+
+    /* Background options */
+    background: linear-gradient(135deg, #f0f8ff, #ffffff);
+    background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+    background-color: #f8f9fa;
 }
 
 /* -------------------- NAVBAR STYLING -------------------- */
 .navbar {
-    background-color: rgb(7, 175, 241) !important; /* Light + 40% opacity */
-    backdrop-filter: blur(8px); /* Stronger blur for text legibility */
+    background-color: rgb(7, 175, 241) !important;
+    backdrop-filter: blur(8px); /* stronger blur */
     box-shadow: 0 4px 6px rgba(12, 12, 12, 0.1);
 }
 
@@ -23,23 +27,23 @@ body {
 }
 
 .navbar-brand img {
-    width: 80px;  /* Bigger logo */
+    width: 80px; /* bigger logo */
     height: auto;
     margin-right: 8px;
     filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.5));
 }
 
 .navbar .nav-link {
-    color: #000 !important; /* Black text for contrast */
+    color: #000 !important;
     font-weight: 500;
 }
 
 .navbar .nav-link:hover {
-    color: #0056b3 !important; /* Blue hover */
+    color: #0056b3 !important;
 }
 
 .navbar-nav .nav-link.active {
-    border-bottom: 2px solid #ffdd00; /* Highlight active link */
+    border-bottom: 2px solid #ffdd00; /* yellow underline for active link */
 }
 
 /* -------------------- CARD HEADERS -------------------- */
@@ -67,12 +71,66 @@ body {
     transform: translateY(-3px);
 }
 
+/* -------------------- CATEGORY IMAGES -------------------- */
 .category-img {
-  height: 250px;       /* fix image height */
-  object-fit: cover;   /* crop to fit nicely */
-  width: 100%;         /* responsive full width */
-  border-radius: 8px;
+    height: 250px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 8px;
 }
+
+/* -------------------- CAROUSEL -------------------- */
+.carousel-item img {
+    height: 600px; /* Bigger carousel */
+    object-fit: cover; /* crop nicely */
+    width: 100%;
+}
+
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.5); /* dark overlay */
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.carousel-caption h2,
+.carousel-caption h3 {
+    font-weight: bold;
+}
+
+.carousel-caption p {
+    font-size: 1.1rem;
+}
+
+/* -------------------- CATEGORY CARDS -------------------- */
+.card {
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card img {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+/* -------------------- BUTTONS -------------------- */
+.btn-outline-primary {
+    border-radius: 30px; /* pill buttons */
+    font-weight: 500;
+    padding: 0.4rem 1.2rem;
+}
+
+/* -------------------- FOOTER -------------------- */
 footer {
     position: relative;
     bottom: 0;
@@ -88,3 +146,10 @@ footer a:hover {
     color: #ffffff;
 }
 
+/* -------------------- HERO SECTION (Optional) -------------------- */
+.hero-section {
+    background: linear-gradient(to right, #0d6efd, #00bfff);
+    color: white;
+    padding: 4rem 2rem;
+    border-radius: 8px;
+}

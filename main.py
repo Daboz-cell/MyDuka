@@ -145,6 +145,9 @@ def dashboard():
 # ------------------------------
 # USER AUTH
 # ------------------------------
+# ------------------------------
+# USER AUTH
+# ------------------------------
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
@@ -165,6 +168,7 @@ def register():
 
     return render_template("register.html")
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -175,15 +179,19 @@ def login():
         if not existing_user:
             flash("User does not exist, please register", "danger")
             return redirect(url_for('register'))
+
+        user_id, name, email_db, stored_hash, phone_number = existing_user
+
+        if bcrypt.check_password_hash(stored_hash, password):
+            session['email'] = email_db
+            session['user_id'] = user_id
+            flash("Logged in successfully", "success")
+            return redirect(url_for('home'))
         else:
-            if bcrypt.check_password_hash(existing_user[2], password):
-                session['email'] = email
-                session['user_id'] = existing_user[0]
-                flash("Logged in successfully", "success")
-                return redirect(url_for('home'))
-            else:
-                flash("Password incorrect, try again", "danger")
+            flash("Password incorrect, try again", "danger")
+
     return render_template('login.html')
+
 
 @app.route('/logout')
 @login_required

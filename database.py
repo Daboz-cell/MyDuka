@@ -64,7 +64,6 @@ def get_data(table):
 def fetch_users():
     return execute_query("SELECT id, name FROM users", fetch=True)
 
-
 # ------------------------------
 # INSERT FUNCTIONS
 # ------------------------------
@@ -152,8 +151,10 @@ def profit_per_day():
 # USER FUNCTIONS
 # ------------------------------
 def check_user(email):
-    result = execute_query(
-        "SELECT * FROM users WHERE email=%s",
-        (email,), fetch=True
-    )
+    query = """
+        SELECT id, name, email, password, phone_number
+        FROM users
+        WHERE email=%s
+    """
+    result = execute_query(query, (email,), fetch=True)
     return result[0] if result else None

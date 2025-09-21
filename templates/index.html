@@ -1,54 +1,104 @@
 {% extends "base.html" %}
 {% block title %} Home {% endblock %}
 {% block content %}
-<h1>Welcome to BlueMart Mini Mart 🛒</h1>
-<p>Shop by category and find everything you need!</p>
 
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 g-4">
-    <div class="col">
-        <div class="card h-100">
-            <img src="{{ url_for('static', filename='images/fruits.jpg') }}" class="card-img-top" alt="Fruits & Vegetables" style="height: 200px; object-fit: cover;">
-            <div class="card-body text-center">
-                <h5 class="card-title">Fruits & Vegetables</h5>
-                <a href="{{ url_for('products', category_id=1) }}" class="btn btn-primary">Shop Now</a>
-            </div>
-        </div>
+<!-- ================= HERO CAROUSEL ================= -->
+<div id="storeCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{{ url_for('static', filename='images/store_front.jpg') }}" 
+           class="d-block w-100" 
+           alt="Store Front">
+      <div class="carousel-caption d-none d-md-block">
+        <h2>Welcome to BlueMart Mini Mart 🛒</h2>
+        <p>Your friendly neighborhood store for fresh groceries and daily essentials.</p>
+      </div>
     </div>
-    <div class="col">
-        <div class="card h-100">
-            <img src="{{ url_for('static', filename='images/dairy.jpg') }}" class="card-img-top" alt="Dairy Products" style="height: 200px; object-fit: cover;">
-            <div class="card-body text-center">
-                <h5 class="card-title">Dairy Products</h5>
-                <a href="{{ url_for('products', category_id=2) }}" class="btn btn-primary">Shop Now</a>
-            </div>
-        </div>
+    <div class="carousel-item">
+      <img src="{{ url_for('static', filename='images/store_inside.jpg') }}" 
+           class="d-block w-100" 
+           alt="Inside Store">
+      <div class="carousel-caption d-none d-md-block">
+        <h2>Fresh & Affordable</h2>
+        <p>From fruits to dairy, we source the best for you and your family.</p>
+      </div>
     </div>
-    <div class="col">
-        <div class="card h-100">
-            <img src="{{ url_for('static', filename='images/bakery.jpg') }}" class="card-img-top" alt="Bakery" style="height: 200px; object-fit: cover;">
-            <div class="card-body text-center">
-                <h5 class="card-title">Bakery</h5>
-                <a href="{{ url_for('products', category_id=3) }}" class="btn btn-primary">Shop Now</a>
-            </div>
-        </div>
+    <div class="carousel-item">
+      <img src="{{ url_for('static', filename='images/workers.jpg') }}" 
+           class="d-block w-100" 
+           alt="Our Team">
+      <div class="carousel-caption d-none d-md-block">
+        <h2>Meet Our Team</h2>
+        <p>Friendly staff always ready to serve you with a smile 😊</p>
+      </div>
     </div>
-    <div class="col">
-        <div class="card h-100">
-            <img src="{{ url_for('static', filename='images/beverages.jpg') }}" class="card-img-top" alt="Beverages" style="height: 200px; object-fit: cover;">
-            <div class="card-body text-center">
-                <h5 class="card-title">Beverages</h5>
-                <a href="{{ url_for('products', category_id=4) }}" class="btn btn-primary">Shop Now</a>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card h-100">
-            <img src="{{ url_for('static', filename='images/household.jpg') }}" class="card-img-top" alt="Household Essentials" style="height: 200px; object-fit: cover;">
-            <div class="card-body text-center">
-                <h5 class="card-title">Household Essentials</h5>
-                <a href="{{ url_for('products', category_id=5) }}" class="btn btn-primary">Shop Now</a>
-            </div>
-        </div>
-    </div>
+  </div>
+
+  <!-- Carousel Controls -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#storeCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#storeCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
 </div>
+
+<!-- ================= CATEGORY GRID ================= -->
+<div class="container">
+  <h2 class="text-center text-primary mb-4">Shop by Category 🛍️</h2>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 g-4">
+    
+    <div class="col">
+      <div class="card h-100">
+        <img src="{{ url_for('static', filename='images/fruits.jpg') }}" class="card-img-top" alt="Fruits & Vegetables">
+        <div class="card-body text-center">
+          <h5 class="card-title">Fruits & Vegetables</h5>
+          <a href="{{ url_for('products', category_id=1) }}" class="btn btn-outline-primary">Shop Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100">
+        <img src="{{ url_for('static', filename='images/dairy.jpg') }}" class="card-img-top" alt="Dairy Products">
+        <div class="card-body text-center">
+          <h5 class="card-title">Dairy Products</h5>
+          <a href="{{ url_for('products', category_id=2) }}" class="btn btn-outline-primary">Shop Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100">
+        <img src="{{ url_for('static', filename='images/bakery.jpg') }}" class="card-img-top" alt="Bakery">
+        <div class="card-body text-center">
+          <h5 class="card-title">Bakery</h5>
+          <a href="{{ url_for('products', category_id=3) }}" class="btn btn-outline-primary">Shop Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100">
+        <img src="{{ url_for('static', filename='images/beverages.jpg') }}" class="card-img-top" alt="Beverages">
+        <div class="card-body text-center">
+          <h5 class="card-title">Beverages</h5>
+          <a href="{{ url_for('products', category_id=4) }}" class="btn btn-outline-primary">Shop Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card h-100">
+        <img src="{{ url_for('static', filename='images/household.jpg') }}" class="card-img-top" alt="Household Essentials">
+        <div class="card-body text-center">
+          <h5 class="card-title">Household Essentials</h5>
+          <a href="{{ url_for('products', category_id=5) }}" class="btn btn-outline-primary">Shop Now</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 {% endblock %}
