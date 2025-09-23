@@ -64,6 +64,48 @@ def add_product():
         return redirect(url_for('products'))
     return render_template('products.html')
 
+@app.route('/edit_product/<int:product_id>', methods=['GET', 'POST'])
+def edit_product(product_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    if request.method == 'POST':
+        name = request.form['name']
+        buying_price = request.form['buying_price']
+        selling_price = request.form['selling_price']
+        category_id = request.form['category_id']
+
+        cur.execute("""
+            UPDATE products
+            SET name=%s, buying_price=%s, selling_price=%s, category_id=%s
+            WHERE id=%s
+        """, (name, buying_price, selling_price, category_id, product_id))
+        conn.commit()
+        cur.close()
+        conn.close()
+        flash('Product updated successfully!', 'success')
+        return redirect(url_for('products'))
+
+    cur.execute("SELECT * FROM products WHERE id=%s", (product_id,))
+    product = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    return render_template('edit_product.html', product=product)
+
+
+@app.route('/delete_product/<int:product_id>')
+def delete_product(product_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("DELETE FROM products WHERE id=%s", (product_id,))
+    conn.commit()
+    cur.close()
+    conn.close()
+    flash('Product deleted successfully!', 'danger')
+    return redirect(url_for('products'))
+
+
 # ------------------------------
 # SALES
 # ------------------------------
