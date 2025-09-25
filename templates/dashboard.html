@@ -2,77 +2,130 @@
 {% block title %} Dashboard {% endblock %}
 {% block content %}
 
-<div class="container">
-    <div>
-        <p>This is the dashboard page</p>
+<div class="container mt-4">
+
+  <!-- Dashboard Header -->
+  <h2 class="fw-bold mb-4">📊 Business Dashboard</h2>
+
+  <!-- Summary Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm border-0">
+        <div class="card-body">
+          <h6>Total Sales</h6>
+          <h3 class="text-primary">
+            Ksh {{ sales_per_d | sum }}
+          </h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm border-0">
+        <div class="card-body">
+          <h6>Total Profit</h6>
+          <h3 class="text-success">
+            Ksh {{ profit_per_d | sum }}
+          </h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm border-0">
+        <div class="card-body">
+          <h6>Top Product</h6>
+          <h5 class="text-dark">
+            {% if product_names %} {{ product_names[0] }} {% else %} N/A {% endif %}
+          </h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm border-0">
+        <div class="card-body">
+          <h6>Active Days</h6>
+          <h3 class="text-warning">
+            {{ days | length }}
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="row">
+    <!-- Sales & Profit per Product -->
+    <div class="col-lg-6 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Sales & Profit per Product</h5>
+          <canvas id="bar-chart-grouped" height="250"></canvas>
+        </div>
+      </div>
     </div>
 
-   
-
-    <div>
-        <canvas id="bar-chart-grouped" width="800" height="450"></canvas>
+    <!-- Sales & Profit per Day -->
+    <div class="col-lg-6 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Sales & Profit per Day</h5>
+          <canvas id="line-chart" height="250"></canvas>
+        </div>
+      </div>
     </div>
-    <div>
-        <canvas id="line-chart" width="800" height="450"></canvas>
-    </div>
-
+  </div>
 
 </div>
 
+<!-- Chart.js -->
 <script>
-    //BAR CHART
-    new Chart(document.getElementById("bar-chart-grouped"), {
-        type: 'bar',
-        data: {
-
-            labels: {{product_names | safe }},
-            datasets: [
-                {
-                    label: "Sales per Product(Ksh)",
-                    backgroundColor: "#3e95cd",
-                    data:{{sales_per_p | safe}},
-                }, {
-                    label: "Profit per Product(Ksh)",
-                    backgroundColor: "#8e5ea2",
-                    data: {{profit_per_p | safe}},
-                }
-            ]
+  // BAR CHART
+  new Chart(document.getElementById("bar-chart-grouped"), {
+    type: 'bar',
+    data: {
+      labels: {{ product_names | safe }},
+      datasets: [
+        {
+          label: "Sales per Product (Ksh)",
+          backgroundColor: "#3e95cd",
+          data: {{ sales_per_p | safe }},
         },
-        options: {
-            title: {
-                display: true,
-                text: 'Sales and Profit per Product',
-            }
+        {
+          label: "Profit per Product (Ksh)",
+          backgroundColor: "#8e5ea2",
+          data: {{ profit_per_p | safe }},
         }
-    });
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
 
-
-
-    // LINE CHART
-    new Chart(document.getElementById("line-chart"), {
-        type: 'line',
-        data: {
-            labels: {{ days | safe}},
-            datasets: [{
-                data: {{sales_per_p | safe}},
-                label: "Sales per Day (Ksh)",
-                borderColor: "#3e95cd",
-                fill: false
-            }, {
-                data: {{profit_per_p | safe}},
-                label: "Profit per Day (Ksh)",
-                borderColor: "#8e5ea2",
-                fill: false
-            }, 
-            ]
+  // LINE CHART
+  new Chart(document.getElementById("line-chart"), {
+    type: 'line',
+    data: {
+      labels: {{ days | safe }},
+      datasets: [
+        {
+          data: {{ sales_per_d | safe }},
+          label: "Sales per Day (Ksh)",
+          borderColor: "#3e95cd",
+          fill: false
         },
-        options: {
-            title: {
-                display: true,
-                text: 'Sales and Profit per Day',
-            }
+        {
+          data: {{ profit_per_d | safe }},
+          label: "Profit per Day (Ksh)",
+          borderColor: "#8e5ea2",
+          fill: false
         }
-    });
-
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
 </script>
 {% endblock %}

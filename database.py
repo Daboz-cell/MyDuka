@@ -1,5 +1,19 @@
 import psycopg2
 
+
+
+def get_db_connection():
+    return psycopg2.connect(
+        user="postgres",
+        password="123456",
+        host="localhost",
+        port="5432",
+        database="myduka_app"
+    )
+
+
+
+
 # ------------------------------
 # DATABASE CONNECTION
 # ------------------------------
@@ -33,17 +47,44 @@ def execute_query(query, values=None, fetch=False):
 # FETCH FUNCTIONS
 # ------------------------------
 def fetch_products():
-    """Fetch all products with category name"""
+    conn = get_db_connection()
+    cur = conn.cursor()
     query = """
         SELECT p.id, p.name, p.buying_price, p.selling_price, c.name AS category_name
         FROM products p
         LEFT JOIN categories c ON p.category_id = c.id
         ORDER BY p.id
     """
-    return execute_query(query, fetch=True)
+    cur.execute(query)
+    products = cur.fetchall()
+    cur.close()
+    conn.close()
+    return products
 
 def fetch_sales():
-    return execute_query("SELECT * FROM sales", fetch=True)
+    query = """
+        SELECT s.id, p.name AS product, u.name AS user,
+               s.quantity, s.total_price, s.created_at
+        FROM sales s
+        JOIN products p ON s.product_id = p.id
+        JOIN users u ON s.user_id = u.id
+        ORDER BY s.created_at DESC
+    """
+    return execute_query(query, fetch=True)
+
+
+def fetch_top_product():
+    query = """
+        SELECT p.name, SUM(s.quantity) AS total_sold
+        FROM sales s
+        JOIN products p ON s.product_id = p.id
+        GROUP BY p.name
+        ORDER BY total_sold DESC
+        LIMIT 1
+    """
+    result = execute_query(query, fetch=True)
+    return result[0] if result else None
+
 
 def fetch_stock():
     return execute_query("SELECT * FROM stock", fetch=True)
@@ -52,11 +93,20 @@ def fetch_categories():
     return execute_query("SELECT id, name FROM categories ORDER BY id", fetch=True)
 
 def fetch_products_by_category(category_id):
-    return execute_query("""
-        SELECT id, name, buying_price, selling_price, category_id
-        FROM products
-        WHERE category_id = %s
-    """, (category_id,), fetch=True)
+    conn = get_db_connection()
+    cur = conn.cursor()
+    query = """
+        SELECT p.id, p.name, p.buying_price, p.selling_price, c.name AS category_name
+        FROM products p
+        LEFT JOIN categories c ON p.category_id = c.id
+        WHERE p.category_id = %s
+        ORDER BY p.id
+    """
+    cur.execute(query, (category_id,))
+    products = cur.fetchall()
+    cur.close()
+    conn.close()
+    return products
 
 def get_data(table):
     return execute_query(f"SELECT * FROM {table}", fetch=True)

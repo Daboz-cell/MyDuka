@@ -1,84 +1,173 @@
 {% extends "base.html" %}
 {% block title %} Sales {% endblock %}
 {% block content %}
-<div>
 
-  <div>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      Make Sale
-    </button>
+<!-- 🔹 Hero / Header -->
+<div class="hero-section text-center mb-4">
+  <h1 class="fw-bold">💰 Manage Sales</h1>
+  <p class="lead">Record new sales and track transactions in real time.</p>
+  <button type="button" class="btn btn-light btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    + Make Sale
+  </button>
+</div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Make a Sale</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- 🔹 Modal for Adding Sales -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Record a New Sale</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="/add_sales">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Select Product</label>
+            <select name="pid" class="form-select" required>
+              <option value="">-- Select Product --</option>
+              {% for product in products %}
+              <option value="{{ product[0] }}">{{ product[1] }}</option>
+              {% endfor %}
+            </select>
           </div>
-          <div class="modal-body">
-            <form method="post" action="/add_sales">
-              <div class="mb-3">
-                <label class="form-label">Select Product</label>
-                <select name="pid" class="form-control" required>
-                  <option value="">Select Product</option>
-                  {% for product in products %}
-                  <option value="{{ product[0] }}">{{ product[1] }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Select User</label>
-                <select name="user_id" class="form-control" required>
-                  <option value="">Select User</option>
-                  {% for user in users %}
-                  <option value="{{ user[0] }}">{{ user[1] }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Quantity</label>
-                <input type="number" class="form-control" name="quantity" min="1" required>
-              </div>
 
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Add Sale</button>
-              </div>
-            </form>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Select User</label>
+            <select name="user_id" class="form-select" required>
+              <option value="">-- Select User --</option>
+              {% for user in users %}
+              <option value="{{ user[0] }}">{{ user[1] }}</option>
+              {% endfor %}
+            </select>
           </div>
-        </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Quantity</label>
+            <input type="number" class="form-control" name="quantity" min="1" required>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add Sale</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🔹 Sales Stats Cards -->
+<div class="row mb-4 text-center">
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Total Sales</h5>
+        <h2>{{ sales|length }}</h2>
       </div>
     </div>
   </div>
 
-  <div class="mt-4">
-    <table id="example" class="table table-striped">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Product</th>
-          <th>User</th>
-          <th>Quantity</th>
-          <th>Total Price</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for sale in sales %}
-        <tr>
-          <td>{{ sale[0] }}</td>
-          <td>{{ sale[1] }}</td>
-          <td>{{ sale[2] }}</td>
-          <td>{{ sale[3] }}</td>
-          <td>{{ sale[4] }}</td>
-          <td>{{ sale[5] }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Total Revenue</h5>
+        <h2>
+          {% if sales %}
+            {{ sales | map(attribute=4) | sum }}
+          {% else %}
+            0
+          {% endif %}
+        </h2>
+      </div>
+    </div>
   </div>
 
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Top Product</h5>
+        <h2>
+          {% if top_product %}
+            {{ top_product[0] }} <br>
+            <small class="text-muted">{{ top_product[1] }} sold</small>
+          {% else %}
+            None
+          {% endif %}
+        </h2>
+      </div>
+    </div>
+  </div>
+  
 </div>
+
+<!-- 🔹 Sales Table -->
+<div class="card shadow-sm">
+  <div class="card-header bg-primary text-white">
+    <h4 class="mb-0">Sales Records</h4>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table id="example" class="table table-striped table-hover">
+        <thead class="table-primary">
+          <tr>
+            <th>ID</th>
+            <th>Product</th>
+            <th>User</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sale in sales %}
+          <tr>
+            <td>{{ sale[0] }}</td>
+            <td>{{ sale[1] }}</td>
+            <td>{{ sale[2] }}</td>
+            <td>{{ sale[3] }}</td>
+            <td>{{ sale[4] }}</td>
+            <td>{{ sale[5] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 🔹 Sales Chart -->
+<div class="card mt-4 shadow-sm">
+  <div class="card-header bg-primary text-white">
+    <h4 class="mb-0">Sales Overview</h4>
+  </div>
+  <div class="card-body">
+    <canvas id="salesChart"></canvas>
+  </div>
+</div>
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('salesChart').getContext('2d');
+  const salesChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [{% for sale in sales %}"{{ sale[5] }}",{% endfor %}],
+      datasets: [{
+        label: 'Total Sales (KSh)',
+        data: [{% for sale in sales %}{{ sale[4] }},{% endfor %}],
+        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+</script>
+
 {% endblock %}

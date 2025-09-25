@@ -4,7 +4,7 @@ from database import (
     insert_products, insert_sales, insert_stock,
     available_stock, sales_per_day, sales_per_product,
     profit_per_day, profit_per_product,
-    insert_user, check_user, fetch_categories, fetch_users,cur
+    insert_user, check_user, fetch_categories, fetch_users,cur,fetch_top_product,fetch_products_by_category,get_db_connection
 )
 from flask_bcrypt import Bcrypt
 from functools import wraps
@@ -44,13 +44,33 @@ def home():
 @login_required
 def products():
     category_id = request.args.get('category_id')
+
     if category_id:
-        cur.execute("SELECT * FROM products WHERE category_id = %s", (category_id,))
-        products = cur.fetchall()
+        products = fetch_products_by_category(category_id)
     else:
         products = fetch_products()
+
     categories = fetch_categories()
-    return render_template('products.html', products=products, categories=categories)
+
+    # ---- stats ----
+    total_products = len(products)
+    total_categories = len(categories)
+    if total_products > 0:
+        avg_markup = (
+            (sum([p[3] for p in products]) / sum([p[2] for p in products])) * 100 - 100
+        )
+    else:
+        avg_markup = 0
+
+    return render_template(
+        'products.html',
+        products=products,
+        categories=categories,
+        total_products=total_products,
+        total_categories=total_categories,
+        avg_markup=round(avg_markup, 1)
+    )
+
 
 @app.route('/add_products', methods=['GET', 'POST'])
 def add_product():
@@ -65,6 +85,7 @@ def add_product():
     return render_template('products.html')
 
 @app.route('/edit_product/<int:product_id>', methods=['GET', 'POST'])
+@login_required
 def edit_product(product_id):
     conn = get_db_connection()
     cur = conn.cursor()
@@ -86,15 +107,17 @@ def edit_product(product_id):
         flash('Product updated successfully!', 'success')
         return redirect(url_for('products'))
 
-    cur.execute("SELECT * FROM products WHERE id=%s", (product_id,))
+    cur.execute("SELECT id, name, buying_price, selling_price, category_id FROM products WHERE id=%s", (product_id,))
     product = cur.fetchone()
     cur.close()
     conn.close()
 
-    return render_template('edit_product.html', product=product)
+    categories = fetch_categories()
+    return render_template('edit_product.html', product=product, categories=categories)
 
 
 @app.route('/delete_product/<int:product_id>')
+@login_required
 def delete_product(product_id):
     conn = get_db_connection()
     cur = conn.cursor()
@@ -105,7 +128,6 @@ def delete_product(product_id):
     flash('Product deleted successfully!', 'danger')
     return redirect(url_for('products'))
 
-
 # ------------------------------
 # SALES
 # ------------------------------
@@ -115,13 +137,21 @@ def sales():
     sales_data = fetch_sales()
     products = fetch_products()
     users = fetch_users()
-    return render_template('sales.html', sales=sales_data, products=products, users=users)
+    top_product = fetch_top_product()   
+    return render_template(
+        'sales.html',
+        sales=sales_data,
+        products=products,
+        users=users,
+        top_product=top_product
+    )
+
 
 @app.route('/add_sales', methods=['GET', 'POST'])
 @login_required
 def add_sales():
     if request.method == 'POST':
-        product_id = request.form['product_id']
+        product_id = request.form['pid']
         user_id = request.form['user_id']
         quantity = int(request.form['quantity'])
         if available_stock(product_id) < quantity:
@@ -154,6 +184,39 @@ def add_stock():
     new_stock = (pid, quantity)
     insert_stock(new_stock)
     flash("Stock added successfully", "success")
+    return redirect(url_for('stock'))
+
+@app.route('/edit_stock/<int:stock_id>', methods=['GET', 'POST'])
+@login_required
+def edit_stock(stock_id):
+    cur.execute("SELECT * FROM stock WHERE id=%s", (stock_id,))
+    stock = cur.fetchone()
+
+    products = fetch_products()
+
+    if request.method == 'POST':
+        product_id = request.form['product_id']
+        quantity = request.form['quantity']
+
+        cur.execute("""
+            UPDATE stock
+            SET product_id=%s, quantity=%s
+            WHERE id=%s
+        """, (product_id, quantity, stock_id))
+        cur.connection.commit()
+
+        flash("Stock updated successfully!", "success")
+        return redirect(url_for('stock'))
+
+    return render_template("edit_stock.html", stock=stock, products=products)
+
+
+@app.route('/delete_stock/<int:stock_id>')
+@login_required
+def delete_stock(stock_id):
+    cur.execute("DELETE FROM stock WHERE id=%s", (stock_id,))
+    cur.connection.commit()
+    flash("Stock deleted successfully!", "danger")
     return redirect(url_for('stock'))
 
 # ------------------------------

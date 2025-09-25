@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %} Edit Stock {% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Edit Stock</h2>
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">Product</label>
+      <select class="form-control" name="product_id" required>
+        {% for product in products %}
+          <option value="{{ product[0] }}" {% if product[0] == stock[1] %}selected{% endif %}>
+            {{ product[1] }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Quantity</label>
+      <input type="number" class="form-control" name="quantity" value="{{ stock[2] }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="{{ url_for('stock') }}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}
